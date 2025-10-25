@@ -2,8 +2,12 @@ import React, { useMemo, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, FlatList } from "react-native";
 import { styles } from "../styles";
 import TodoListItem from "../components/TodoListItem";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo as addTodoAction, toggleTodo as toggleTodoAction, deleteTodo as deleteTodoAction } from "../app/features/todos/todosSlice";
 
-export default function HomeScreen({ navigation, todos, addTodo, toggleTodo, deleteTodo }) {
+export default function HomeScreen({ navigation }) {
+  const todos = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [filter, setFilter] = useState("all"); // all | active
@@ -14,7 +18,7 @@ export default function HomeScreen({ navigation, todos, addTodo, toggleTodo, del
   }, [todos, filter]);
 
   const handleSubmit = () => {
-    addTodo(title, description);
+    dispatch(addTodoAction({ title, description }));
     setTitle("");
     setDescription("");
   };
@@ -52,8 +56,8 @@ export default function HomeScreen({ navigation, todos, addTodo, toggleTodo, del
             <TodoListItem
               item={item}
               onPress={() => navigation.navigate("TodoDetails", { id: item.id })}
-              onToggle={() => toggleTodo(item.id)}
-              onDelete={() => deleteTodo(item.id)}
+              onToggle={() => dispatch(toggleTodoAction(item.id))}
+              onDelete={() => dispatch(deleteTodoAction(item.id))}
             />
           )}
           ListEmptyComponent={<Text style={{ textAlign: "center", marginTop: 24 }}>No todos yet.</Text>}
@@ -62,3 +66,4 @@ export default function HomeScreen({ navigation, todos, addTodo, toggleTodo, del
     </View>
   );
 }
+

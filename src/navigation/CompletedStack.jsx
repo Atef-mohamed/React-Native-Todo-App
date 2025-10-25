@@ -6,29 +6,12 @@ import TodoDetailsScreen from "../screens/TodoDetailsScreen";
 
 const Stack = createNativeStackNavigator();
 
-export default function CompletedStack({ todos, toggleTodo, deleteTodo }) {
+export default function CompletedStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: Platform.OS === "ios" }}>
-      <Stack.Screen name="CompletedTodos" options={{ title: "Completed" }}>
-        {(props) => (
-          <CompletedScreen
-            {...props}
-            todos={todos}
-            toggleTodo={toggleTodo}
-            deleteTodo={deleteTodo}
-          />
-        )}
-      </Stack.Screen>
-      <Stack.Screen name="TodoDetails" options={{ title: "Details" }}>
-        {(props) => (
-          <TodoDetailsScreen
-            {...props}
-            todos={todos}
-            toggleTodo={toggleTodo}
-            deleteTodo={deleteTodo}
-          />
-        )}
-      </Stack.Screen>
+      <Stack.Screen name="CompletedTodos" options={{ title: "Completed" }} component={CompletedScreen} />
+      <Stack.Screen name="TodoDetails" options={{ title: "Details" }} component={TodoDetailsScreen} />
     </Stack.Navigator>
   );
 }
+
